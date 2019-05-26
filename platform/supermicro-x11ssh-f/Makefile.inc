@@ -5,7 +5,7 @@
 
 SOC := ast2400
 # The UARTs are in the following order: UART5, VUART, UART1, UART2, UART3, UART4
-QEMUFLAGS += -m 128 -M ast2500-evb \
+QEMUFLAGS += -m 128 -M palmetto-bmc \
 	-serial mon:stdio \
 	-serial null \
 	-serial null \
