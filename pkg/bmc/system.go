@@ -271,6 +271,7 @@ func StartupWithConfig(p Platform, c *config.Config) (error, chan error) {
 	log.Printf("Loading system configuration")
 	sysconf := loadSysconf("/config/system.textpb")
 
+	time.Sleep(25 * time.Second)
 	network, err := startNetwork(sysconf.Network)
 	if err != nil {
 		log.Printf("startNetwork failed: %v", err)

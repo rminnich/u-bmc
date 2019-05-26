@@ -5,9 +5,10 @@
 package platform
 
 import (
+    "log"
 	"github.com/u-root/u-bmc/pkg/aspeed"
 	"github.com/u-root/u-bmc/pkg/bmc"
-	"github.com/u-root/u-bmc/platform/aspeed-ast2500evb/pkg/gpio"
+	"github.com/u-root/u-bmc/platform/supermicro-x11ssh-f/pkg/gpio"
 )
 
 type platform struct {
@@ -21,6 +22,8 @@ func (p *platform) InitializeGpio(g *bmc.GpioSystem) error {
 }
 
 func (p *platform) InitializeSystem() error {
+	log.Printf("Setting up Network Controller Sideband Interface (NC-SI) for eth0")
+	go bmc.StartNcsi("eth0")
 	return nil
 }
 

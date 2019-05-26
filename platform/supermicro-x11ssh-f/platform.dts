@@ -69,13 +69,16 @@
 &mac0 {
 	status = "okay";
 
-	status = "okay";
-
  	use-ncsi;
 	no-hw-checksum;
 
  	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_rmii1_default>;
+};
+
+// /dev/ttyS2: Host's ttyS1
+&uart3 {
+	status = "okay";
 };
 
 &pinctrl {

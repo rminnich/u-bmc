@@ -6,7 +6,7 @@ package main
 
 import (
 	"github.com/u-root/u-bmc/pkg/bmc"
-	"github.com/u-root/u-bmc/platform/aspeed-ast2500evb/pkg/platform"
+	"github.com/u-root/u-bmc/platform/supermicro-x11ssh-f/pkg/platform"
 )
 
 func main() {

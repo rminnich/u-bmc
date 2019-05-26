@@ -308,7 +308,7 @@ CONFIG_USE_OF=y
 CONFIG_ZBOOT_ROM_TEXT=0x0
 CONFIG_ZBOOT_ROM_BSS=0x0
 # CONFIG_ARM_APPENDED_DTB is not set
-CONFIG_CMDLINE="earlyprintk=1 rdinit=/loader ubi.mtd=ubi console=ttyS4"
+CONFIG_CMDLINE="earlyprintk=1 rdinit=/loader ubi.mtd=ubi loglevel=8 console=ttyS4,115200n8"
 CONFIG_KEXEC=y
 # CONFIG_CRASH_DUMP is not set
 CONFIG_AUTO_ZRELADDR=y

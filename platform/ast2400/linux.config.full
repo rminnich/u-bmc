@@ -328,7 +328,7 @@ CONFIG_USE_OF=y
 CONFIG_ZBOOT_ROM_TEXT=0x0
 CONFIG_ZBOOT_ROM_BSS=0x0
 # CONFIG_ARM_APPENDED_DTB is not set
-CONFIG_CMDLINE="earlyprintk=1 ubi.mtd=ubi root=ubi0:root rootfstype=ubifs init=/init dyndbg=\"file net/ncsi/* +p\" rw console=ttyS4"
+CONFIG_CMDLINE="earlyprintk=1 ubi.mtd=ubi root=ubi0:root rootfstype=ubifs init=/init ignore_loglevel loglevel=8 dyndbg=\"file net/ncsi/* +p\" rw console=ttyS4,115200n8"
 CONFIG_KEXEC=y
 # CONFIG_CRASH_DUMP is not set
 CONFIG_AUTO_ZRELADDR=y
