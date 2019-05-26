@@ -1,10 +1,10 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm 5.0.4 Kernel Configuration
+# Linux/arm 5.0.7 Kernel Configuration
 #
 
 #
-# Compiler: arm-none-eabi-gcc (15:6.3.1+svn253039-1) 6.3.1 20170620
+# Compiler: arm-none-eabi-gcc (15:6.3.1+svn253039-1build1) 6.3.1 20170620
 #
 CONFIG_CC_IS_GCC=y
 CONFIG_GCC_VERSION=60301
@@ -306,7 +306,7 @@ CONFIG_USE_OF=y
 CONFIG_ZBOOT_ROM_TEXT=0x0
 CONFIG_ZBOOT_ROM_BSS=0x0
 # CONFIG_ARM_APPENDED_DTB is not set
-CONFIG_CMDLINE="earlyprintk=1 rdinit=/loader ubi.mtd=ubi console=ttyS4,57600n8"
+CONFIG_CMDLINE="earlyprintk=1 rdinit=/loader ubi.mtd=ubi"
 CONFIG_KEXEC=y
 # CONFIG_CRASH_DUMP is not set
 CONFIG_AUTO_ZRELADDR=y

@@ -1,0 +1,87 @@
+// SPDX-License-Identifier: GPL-2.0+
+/dts-v1/;
+
+#include "aspeed-g4.dtsi"
+#include "config.h"
+
+/ {
+	model = "Supermicro X11 BMC";
+	compatible = "aspeed,ast2400";
+
+	aliases {
+		con = &uart5;
+	};
+	chosen {
+		stdout-path = "con:115200n8";
+#ifdef BOOTLOADER
+		linux,initrd-start = <CONFIG_INITRD_START>;
+		linux,initrd-end = <CONFIG_INITRD_END>;
+#endif
+	};
+
+	memory@40000000 {
+        /* 128 MiB DDR3 memory */
+		reg = <0x40000000 0x08000000>;
+	};
+
+	reserved-memory {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+
+ 		vga_memory: framebuffer@47000000 {
+			no-map;
+			reg = <0x47000000 0x01000000>; /* 16MB */
+		};
+
+ 		flash_memory: region@98000000 {
+			no-map;
+			reg = <0x98000000 0x01000000>; /* 16MB */
+		};
+	};
+};
+
+&fmc {
+	status = "okay";
+	flash@0 {
+		status = "okay";
+		m25p,fast-read;
+		label = "bmc";
+#include "ubmc-flash-layout.dtsi"
+	};
+};
+
+&spi {
+	status = "okay";
+	flash@0 {
+		status = "okay";
+		m25p,fast-read;
+		label = "pnor";
+	};
+};
+
+// /dev/ttyS4: BMC console UART
+&uart5 {
+	status = "okay";
+};
+
+#ifndef BOOTLOADER
+&mac0 {
+	status = "okay";
+
+	status = "okay";
+
+ 	use-ncsi;
+	no-hw-checksum;
+
+ 	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_rmii1_default>;
+};
+
+&pinctrl {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_flbusy_default &pinctrl_flwp_default
+ 			     &pinctrl_vgahs_default &pinctrl_vgavs_default
+			     &pinctrl_ddcclk_default &pinctrl_ddcdat_default>;
+};
+#endif /* !BOOTLOADER */
