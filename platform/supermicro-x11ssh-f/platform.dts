@@ -53,10 +53,12 @@
 
 &spi {
 	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_spi1debug_default>;
 	flash@0 {
 		status = "okay";
 		m25p,fast-read;
-		label = "pnor";
+		label = "bios";
 	};
 };
 
@@ -76,9 +78,23 @@
 	pinctrl-0 = <&pinctrl_rmii1_default>;
 };
 
+
 // /dev/ttyS2: Host's ttyS1
 &uart3 {
 	status = "okay";
+};
+
+&vuart {
+    status = "okay";
+};
+
+&lpc_ctrl {
+    status = "okay";
+};
+
+&lpc_snoop {
+    status = "okay";
+    snoop-ports = <0x80>;
 };
 
 &pinctrl {

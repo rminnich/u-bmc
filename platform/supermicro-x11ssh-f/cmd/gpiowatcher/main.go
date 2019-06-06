@@ -7,7 +7,7 @@ package main
 import (
 	"flag"
 	"github.com/u-root/u-bmc/pkg/gpiowatcher"
-	"github.com/u-root/u-bmc/platform/aspeed-ast2500evb/pkg/gpio"
+	"github.com/u-root/u-bmc/platform/supermicro-x11ssh-f/pkg/gpio"
 )
 
 var (

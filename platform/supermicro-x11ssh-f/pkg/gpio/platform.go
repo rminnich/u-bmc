@@ -4,8 +4,19 @@
 
 package gpio
 
+import (
+	"github.com/u-root/u-bmc/pkg/aspeed"
+)
+
 var (
-	linePortMap = map[string]uint32{}
+	linePortMap = map[string]uint32{
+		"PWR_BTN_N":           aspeed.GpioPort("C1"),
+		"RST_BTN_N":           aspeed.GpioPort("E2"),
+		// Pull low to have BMC own the bus
+		"BIOS_MUX_N":          aspeed.GpioPort("E4"),
+		"PWR_LED_N":           aspeed.GpioPort("D6"),
+		"UID_LED_N":           aspeed.GpioPort("D7"),
+	}
 
 	// Reverse map of linePortMap
 	portLineMap map[uint32]string

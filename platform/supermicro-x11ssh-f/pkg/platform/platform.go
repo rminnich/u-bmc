@@ -9,6 +9,8 @@ import (
 	"github.com/u-root/u-bmc/pkg/aspeed"
 	"github.com/u-root/u-bmc/pkg/bmc"
 	"github.com/u-root/u-bmc/platform/supermicro-x11ssh-f/pkg/gpio"
+
+	pb "github.com/u-root/u-bmc/proto"
 )
 
 type platform struct {
@@ -18,10 +20,40 @@ type platform struct {
 }
 
 func (p *platform) InitializeGpio(g *bmc.GpioSystem) error {
+	g.Hog(map[string]bool{
+		"PWR_LED_N":      false,
+	})
+
+	go g.ManageButton("PWR_BTN_N", pb.Button_BUTTON_POWER, bmc.GPIO_INVERTED)
+	go g.ManageButton("RST_BTN_N", pb.Button_BUTTON_RESET, bmc.GPIO_INVERTED)
 	return nil
 }
 
 func (p *platform) InitializeSystem() error {
+	// Configure UART routing:
+	// - Route UART2 to UART3
+	// TODO(bluecmd): Platform dependent
+	p.a.Mem().MustWrite32(0x1E789000+0x9c, 0x6<<22|0x4<<19)
+
+	// Re-enable the clock of UART2 to enable the internal routing
+	// which will make u-bmc end of the pipe be /dev/ttyS2
+	// This can be done by defining the uart2 as active in the dts, but
+	// if we do that then /dev/ttyS1 might be confusing as it will not work
+	// properly.
+	p.a.Mem().MustWrite32(aspeed.SCU_BASE+0x0, aspeed.SCU_PASSWORD)
+	csr := p.a.Mem().MustRead32(aspeed.SCU_BASE + 0x0c)
+	p.a.Mem().MustWrite32(aspeed.SCU_BASE+0x0c, csr & ^uint32(1<<16))
+	// Enable UART1 and UART2 pins
+	mfr := p.a.Mem().MustRead32(aspeed.SCU_BASE + 0x84)
+	p.a.Mem().MustWrite32(aspeed.SCU_BASE+0x84, mfr|0xffff0000)
+	// Disable all pass-through GPIO ports. This enables u-bmc to control
+	// the power buttons, which are routed as pass-through before boot has
+	// completed.
+	hws := p.a.Mem().MustRead32(aspeed.SCU_BASE + 0x70)
+	p.a.Mem().MustWrite32(aspeed.SCU_BASE+0x70, hws & ^uint32(3<<21))
+	p.a.Mem().MustWrite32(aspeed.SCU_BASE+0x8c, 0)
+	p.a.Mem().MustWrite32(aspeed.SCU_BASE+0x0, 0x0)// - Route UART3 to UART2
+
 	log.Printf("Setting up Network Controller Sideband Interface (NC-SI) for eth0")
 	go bmc.StartNcsi("eth0")
 	return nil
@@ -46,7 +78,7 @@ func (p *platform) ThermometerMap() map[int]string {
 }
 
 func (p *platform) HostUart() (string, int) {
-	return "/dev/ttyS2", 115200
+	return "/dev/ttyS5", 115200
 }
 
 func (p *platform) Close() {
